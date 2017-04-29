@@ -31,6 +31,6 @@ class MusicHelperServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'music-helper');
+        $this->mergeConfigFrom(__DIR__.'/../config/music-helper.php', 'music-helper');
     }
 }
