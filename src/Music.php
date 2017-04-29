@@ -5,11 +5,18 @@ namespace Utvarp\MusicHelper;
 use Illuminate\Support\Collection;
 use Utvarp\MusicHelper\Exceptions\MusicException;
 use Utvarp\MusicHelper\Helpers;
+use Utvarp\MusicHelper\Models\DeezerResult;
+use Utvarp\MusicHelper\Searches\Deezer;
 
 class Music
 {
     protected $possibleSources;
-    private $sources;
+
+    public $sources;
+    public $track;
+    public $artist;
+    public $results;
+    public $limit;
 
     /**
      * Create a new Music Instance.
@@ -18,10 +25,105 @@ class Music
     {
         $this->possibleSources = Helpers::collect([
             'all',
-            'deezer',
+            'deezer'
         ]);
 
-        $this->sources(); // default
+        // set defaults
+        $this->sources();
+        $this->track = null;
+        $this->artist = null;
+        $this->results = (object) [
+            'searchedForArtist' => null,
+            'searchedForTrack' => null,
+            'countBySources' => Helpers::collect([]),
+            'resultsBySources' => Helpers::collect([]),
+        ];
+
+        return $this;
+    }
+
+    /**
+     * Searches for possible results of artist and track, on selected sources
+     * @return object An object containing collections of results and count
+     */
+    public function search($limit = 25)
+    {
+        if ($this->sources->contains('all')) {
+            $sources = $this->possibleSources->reject(function ($source) {
+                return $source == 'all';
+            });
+        } else {
+            $sources = $this->sources;
+        }
+
+        $this->limit = $limit;
+
+        $sources->each(function ($source) {
+            $source = ucfirst($source);
+            $method = "search{$source}";
+            $this->$method();
+        });
+
+        $this->results->searchedForArtist = $this->artist;
+        $this->results->searchedForTrack = $this->track;
+        return $this->results;
+    }
+
+    public function getResultsCount($source = 'all')
+    {
+        if ($source == "all") {
+            return $this->results->countBySources;
+        }
+
+        if ($this->results->countBySources->has($source)) {
+            return $this->results->countBySources->get($source);
+        }
+
+        throw MusicException::sourceNotFoundInResults();
+    }
+
+    public function getResults($source = 'all')
+    {
+        if ($source == "all") {
+            return $this->results->resultsBySources;
+        }
+
+        if ($this->results->resultsBySources->has($source)) {
+            return $this->results->resultsBySources->get($source);
+        }
+
+        throw MusicException::sourceNotFoundInResults();
+    }
+
+    public function searchDeezer()
+    {
+        $search = Deezer::search($this->track, $this->artist, $this->limit);
+        $results = new DeezerResult($search, $this->track, $this->artist);
+
+        $this->results->resultsBySources->put('deezer', $results);
+        $this->results->countBySources->put('deezer', $results->count);
+    }
+
+    /**
+     * Set a track name to search for
+     * @param  string $track The track name
+     */
+    public function track(string $track)
+    {
+        $this->track = $track;
+
+        return $this;
+    }
+
+    /**
+     * Set an artist name to search for
+     * @param  string $artist The artist name
+     */
+    public function artist(string $artist)
+    {
+        $this->artist = $artist;
+
+        return $this;
     }
 
     /**
@@ -48,14 +150,5 @@ class Music
         }
 
         throw MusicException::unsupportedSource();
-    }
-
-    /**
-     * Return the current value of sources
-     * @return Illuminate\Support\Collection A collection of set sources
-     */
-    public function getSources()
-    {
-        return $this->sources;
     }
 }

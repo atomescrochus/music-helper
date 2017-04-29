@@ -10,4 +10,9 @@ class MusicException extends Exception
     {
         return new static('One or all of the given sources are unsupported.');
     }
+
+    public static function sourceNotFoundInResults()
+    {
+        return new static("We could not find the requested source in the results.");
+    }
 }
