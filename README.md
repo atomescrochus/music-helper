@@ -45,7 +45,9 @@ For now, this package will only fetch _basic_ informations:
 - (If available) The artist name and id from requested source;
 - (If available) The album name and id from requested source;
 
-In addition to this information, the package will also perform a string similarity check between a result's track and artist name against the actual searched for result. That way, you could decide not to trust the source' listing order and sort yourself by one of the smililarity score.
+_For now_, you need to make extra call to the source API (with the ID) to fetch more detailed information.
+
+In addition to the information from the source API, the package will also perform a string similarity check between a result's track and artist name against the actual searched for result. That way, you could decide not to trust the source' listing order and sort yourself by one of the smililarity score.
 
 Here's how you could play with the package:
 
@@ -78,6 +80,7 @@ $levenshteinScore = $result->track->similarityScores->levenshtein; // Levenshtei
 
 - Caching search so we don't hit any API rate limit too quickly
 - More source
+- Add more information to source (?)
 
 
 ## Testing
