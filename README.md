@@ -37,7 +37,55 @@ Then add the ServiceProvider to your `config/app.php` file:
 $music = new Utvarp\Music();
 
 // sets a source, takes string, array or collection. Defaults to 'all' if no parameters.
-$music->source('all');
+$music->sources('all');
+$music->artist('Lady Gaga'); // sets an artist to search for
+$music->track('Poker Face'); // sets a track to search for
+
+$search = $music->search(15); // value is to set a limit to the results. Default is 25.
+
+// It could also be chained as such
+$search = $music->sources('all')->artist('Lady Gaga')->track('Poker Face')->search(15);
+
+// You can then call the corresponding method to get the results, or use $search direcly
+$search->getResults(); // no parameters = all. Returns a collection or the requested value
+$search->getResultsCount('deezer'); // same comment as getResults()
+```
+
+## What to expect in the results / Examples
+
+For now, this package will only fetch _basic_ informations:
+
+- The track name and id from requested source; 
+- (If available) The artist name and id from requested source;
+- (If available) The album name and id from requested source;
+
+In addition to this information, the package will also perform a string similarity check between a result's track and artist name against the actual searched for result. That way, you could decide not to trust the source' listing order and sort yourself by one of the smililarity score.
+
+Here's how you could play with the package:
+
+```php
+$music = new Utvarp\Music();
+$search = $music->search->source('all')->artist('Lady Gaga')->track('Poker Face')->search(15);
+$deezerResults = $search->getResults('deezer');
+
+$count = $deezerResults->count; // fetch the total results count
+$results = $deezerResults->results; // get the actual result collection
+
+// access a result
+$result = $results->first(); // Since it's a collection
+//or
+$result = $results[0]; // But you can still access it as an array
+
+// from here you can play with the track, artist or album object.
+$trackId = $result->track->id;
+$trackName = $result->track->name;
+$albumName = $result->album->name;
+
+// the similarity score isn't available for the album, since we don't (yet?) search by album
+$similarTextScore = $result->track->similarityScores->similar_text; // maximum score of 100.0
+$smgScore = $result->track->similarityScores->smg; // Smith Waterman Gotoh score, maximum of 1.0
+$levenshteinScore = $result->track->similarityScores->levenshtein; // Levenshtein score, maximum of 1
+
 ```
 
 ## Testing
