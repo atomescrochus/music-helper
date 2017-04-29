@@ -18,7 +18,7 @@ composer require utvarp/music-helper
 ## Usage
 
 ```php
-$music = new Utvarp\Music();
+$music = new Utvarp\MusicHelper\Music();
 
 // sets a source, takes string, array or collection. Defaults to 'all' if no parameters.
 $music->sources('all');
@@ -50,7 +50,7 @@ In addition to the information from the source API, the package will also perfor
 Here's how you could play with the package:
 
 ```php
-$music = new Utvarp\Music();
+$music = new Utvarp\MusicHelper\Music();
 $search = $music->search->source('all')->artist('Lady Gaga')->track('Poker Face')->search(15);
 $deezerResults = $search->getResults('deezer');
 
