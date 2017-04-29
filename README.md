@@ -17,27 +17,7 @@ composer require utvarp/music-helper
 
 ## Usage
 
-```php
-$music = new Utvarp\MusicHelper\Music();
-
-// sets a source, takes string, array or collection. Defaults to 'all' if no parameters.
-$music->sources('all');
-$music->artist('Lady Gaga'); // sets an artist to search for
-$music->track('Poker Face'); // sets a track to search for
-
-$search = $music->search(15); // value is to set a limit to the results. Default is 25.
-
-// It could also be chained as such
-$search = $music->sources('all')->artist('Lady Gaga')->track('Poker Face')->search(15);
-
-// You can then call the corresponding method to get the results, or use $search direcly
-$search->getResults(); // no parameters = all. Returns a collection or the requested value
-$search->getResultsCount('deezer'); // same comment as getResults()
-```
-
-## Examples and what to expect in the results
-
-For now, this package will only fetch _basic_ informations:
+At the moment, this package will only fetch _basic_ informations:
 
 - The track name and id from requested source; 
 - (If available) The artist name and id from requested source;
@@ -51,27 +31,36 @@ Here's how you could play with the package:
 
 ```php
 $music = new Utvarp\MusicHelper\Music();
-$search = $music->search->source('all')->artist('Lady Gaga')->track('Poker Face')->search(15);
+
+// If the source you want to use needs an API key, you would include it like so
+// You can see in the available source list in the readme if an API needs a key
+$music->setMusixmatchAPiKey($key); // method names are in this fashion: set{Sourcename}APIKey
+
+// You're not forced to chain the methods, but search should go at the end.
+// Source takes a string, an array or a collection of the possible sources, default is 'all'.
+// The integer passes to search is the maximum result you want returned from an API, default is 25.
+$search = $music->source('all')->artist('Lady Gaga')->track('Poker Face')->search(15);
+
+// Now, out of all the source, if you wanted to get the Deezer results (but it could be any available source)
 $deezerResults = $search->getResults('deezer');
 
 $count = $deezerResults->count; // fetch the total results count
 $results = $deezerResults->results; // get the actual result collection
 
-// access a result
-$result = $results->first(); // Since it's a collection
+// You could acccess a specific result
+$result = $results->first(); // Since it's a collection, the usual methods are available
 //or
-$result = $results[0]; // But you can still access it as an array
+$result = $results[0]; // But you can still access a collection like an array, if you prefer
 
-// from here you can play with the track, artist or album object.
+// From the result, you have access to a track, artist and album object.
 $trackId = $result->track->id;
 $trackName = $result->track->name;
 $albumName = $result->album->name;
 
-// the similarity score isn't available for the album, since we don't (yet?) search by album
+// In those objects (except album), you also have access to a the similarity score from 3 different algorithms
 $similarTextScore = $result->track->similarityScores->similar_text; // maximum score of 100.0
 $smgScore = $result->track->similarityScores->smg; // Smith Waterman Gotoh score, maximum of 1.0
 $levenshteinScore = $result->track->similarityScores->levenshtein; // Levenshtein score, maximum of 1
-
 ```
 
 ## Wishlist / Roadmap / Help wanted 👷🚧👷‍♀️
@@ -90,11 +79,13 @@ This should be easy. Follow the next steps and check the corresponding files for
 1. Create a new search class in `src\Searches\{SourceName}.php`. This class should be only responsible to make the search to the source's api.
 2. Create a new model class in `src\Models\{SourceName}Result.php`. This class should be only responsible to correctly _format_ the results received by the API  and set the `track`, `artist` and `album` values using the corresponding methods you can find in the base `Result` model.
 3. Add `sourceName` to the `possibleSources` collection in the constructor of `src\Music.php`.
-4. Test your things, but it should now be all ok!
+4. (If required) Add a method to set the API key of the source and add the source to the `apiKeys` collection in the constructor of `src\Music.php`.
+5. Test your things, but it should now be all ok!
 
 ### Existing sources
 
-- Deezer
+- Deezer (no API key required)
+- Musixmatch (API key required) (in development)
 
 ## Testing
 
