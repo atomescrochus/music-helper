@@ -17,20 +17,6 @@ You can install the package via composer:
 composer require utvarp/music-helper
 ```
 
-### Provider
-
-Then add the ServiceProvider to your `config/app.php` file:
-
-```php
-'providers' => [
-    ...
-
-    Utvarp\MusicHelper\MusicHelperServiceProvider::class
-
-    ....
-]
-```
-
 ## Usage
 
 ```php
