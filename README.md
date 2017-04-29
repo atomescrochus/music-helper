@@ -98,6 +98,10 @@ This should be easy. Follow the next steps, or just check the corresponding file
 $ composer test
 ```
 
+## Changelog
+
+Changes can be found [in the release pages of the repo](https://github.com/Utvarp/music-helper/releases).
+
 ## Contributing
 
 Contributions are welcome, [thanks to everyone who sent something out way](https://github.com/utvarp/music-helper/graphs/contributors) :)
