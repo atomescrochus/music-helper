@@ -85,7 +85,7 @@ $levenshteinScore = $result->track->similarityScores->levenshtein; // Levenshtei
 
 ## How to create new source
 
-This should be easy. Follow the next steps, or just check the corresponding files for the `deezer` source and build from there.
+This should be easy. Follow the next steps and check the corresponding files for the `deezer` source and just build from there!
 
 1. Create a new search class in `src\Searches\{SourceName}.php`. This class should be only responsible to make the search to the source's api.
 2. Create a new model class in `src\Models\{SourceName}Result.php`. This class should be only responsible to correctly _format_ the results received by the API  and set the `track`, `artist` and `album` values using the corresponding methods you can find in the base `Result` model.
