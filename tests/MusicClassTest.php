@@ -19,8 +19,11 @@ class MusicClassTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf(
             Collection::class,
-            $music->getSources()
+            $music->sources
         );
+
+        $this->assertNull($music->artist);
+        $this->assertNull($music->track);
     }
 
     public function testCanSetStringAsSource()
@@ -28,8 +31,8 @@ class MusicClassTest extends \PHPUnit_Framework_TestCase
         $music = new Music();
         $music->sources('deezer');
 
-        $this->assertFalse($music->getSources()->isEmpty());
-        $this->assertNotEquals('all', $music->getSources()->first());
+        $this->assertFalse($music->sources->isEmpty());
+        $this->assertNotEquals('all', $music->sources->first());
     }
 
     public function testCanSetArrayAsSource()
@@ -37,8 +40,8 @@ class MusicClassTest extends \PHPUnit_Framework_TestCase
         $music = new Music();
         $music->sources(['deezer']);
 
-        $this->assertFalse($music->getSources()->isEmpty());
-        $this->assertNotEquals('all', $music->getSources()->first());
+        $this->assertFalse($music->sources->isEmpty());
+        $this->assertNotEquals('all', $music->sources->first());
     }
 
     public function testCanSetCollectionAsSource()
@@ -47,7 +50,34 @@ class MusicClassTest extends \PHPUnit_Framework_TestCase
         $music = new Music();
         $music->sources($sources);
 
-        $this->assertFalse($music->getSources()->isEmpty());
-        $this->assertNotEquals('all', $music->getSources()->first());
+        $this->assertFalse($music->sources->isEmpty());
+        $this->assertNotEquals('all', $music->sources->first());
+    }
+
+    public function testCanSetAnArtistToSearchFor()
+    {
+        $artist = "Lady Gaga";
+        $music = new Music();
+        $music->artist($artist);
+
+        $this->assertEquals($artist, $music->artist);
+    }
+
+    public function testCanSetATrackToSearchFor()
+    {
+        $track = "Poker Face";
+        $music = new Music();
+        $music->track($track);
+
+        $this->assertEquals($track, $music->track);
+    }
+
+    public function testCanMakeASearchForInAllSources()
+    {
+        $track = "Poker Face";
+        $artist = "Lady Gaga";
+        $music = new Music();
+
+        $results = $music->sources('all')->track($track)->artist($artist)->search();
     }
 }
