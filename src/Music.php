@@ -9,6 +9,7 @@ use Utvarp\MusicHelper\Helpers;
 class Music
 {
     protected $possibleSources;
+    protected $apiKeys;
 
     public $sources;
     public $track;
@@ -23,7 +24,12 @@ class Music
     {
         $this->possibleSources = Helpers::collect([
             'all',
-            'deezer'
+            'deezer',
+            'musixmatch'
+        ]);
+
+        $this->apiKeys = Helpers::collect([
+            'musixmatch' => null,
         ]);
 
         // set defaults
@@ -61,7 +67,9 @@ class Music
             $searchClassName = "Utvarp\MusicHelper\Searches\\".$ucFirstSource;
             $resultModelName = "Utvarp\MusicHelper\Models\\".$ucFirstSource."Result";
 
-            $searchClass = new $searchClassName();
+            $apiKey = $this->apiKeys->has($source) ? $this->apiKeys->get($source) : null;
+
+            $searchClass = new $searchClassName($apiKey);
             $searchResults = $searchClass->search($this->track, $this->artist, $this->limit);
 
             $results = new $resultModelName($searchResults, $this->track, $this->artist);
@@ -148,5 +156,12 @@ class Music
         }
 
         throw MusicException::unsupportedSource();
+    }
+
+    public function setMusixmatchAPIKey($key)
+    {
+        $this->apiKeys->musixmatch = $key;
+
+        return $this;
     }
 }

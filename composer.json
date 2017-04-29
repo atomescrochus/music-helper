@@ -23,7 +23,7 @@
         "atomescrochus/laravel-string-similarities": "^1.1",
         "deezer/deezer-php-sdk": "dev-master",
         "illuminate/support": "^5.4",
-        "vlucas/phpdotenv": "^2.4"
+        "akerbis/musixmatch": "dev-master"
     },
     "require-dev": {
         "phpunit/phpunit": "5.*"
