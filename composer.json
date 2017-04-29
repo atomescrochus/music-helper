@@ -20,8 +20,9 @@
     ],
     "require": {
         "php": "^7.0",
-        "illuminate/support": "^5.4",
-        "deezer/deezer-php-sdk": "dev-master"
+        "atomescrochus/laravel-string-similarities": "^1.1",
+        "deezer/deezer-php-sdk": "dev-master",
+        "illuminate/support": "^5.4"
     },
     "require-dev": {
         "phpunit/phpunit": "5.*"
