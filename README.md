@@ -81,6 +81,7 @@ $levenshteinScore = $result->track->similarityScores->levenshtein; // Levenshtei
 - Caching search so we don't hit any API rate limit too quickly
 - More source
 - Add more information to source (?)
+- Add methods to make more precise search in sources' APIs (for ex.: searching by the ID returned by the basic search)?
 
 ## How to create new source
 
