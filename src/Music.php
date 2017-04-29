@@ -4,6 +4,7 @@ namespace Utvarp\MusicHelper;
 
 use Illuminate\Support\Collection;
 use Utvarp\MusicHelper\Exceptions\MusicException;
+use Utvarp\MusicHelper\Helpers;
 
 class Music
 {
@@ -15,7 +16,7 @@ class Music
      */
     public function __construct()
     {
-        $this->possibleSources = collect([
+        $this->possibleSources = Helpers::collect([
             'all',
             'deezer',
         ]);
@@ -30,12 +31,12 @@ class Music
     {
 
         if (is_string($sources) && $this->possibleSources->contains($sources)) {
-            $this->source = collect($sources);
+            $this->source = Helpers::collect($sources);
             return $this;
         }
 
         if (is_array($sources) && !$this->possibleSources->intersect($sources)->isEmpty()) {
-            $this->source = collect($sources);
+            $this->source = Helpers::collect($sources);
             return $this;
         }
 
