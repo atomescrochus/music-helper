@@ -17,27 +17,7 @@ composer require utvarp/music-helper
 
 ## Usage
 
-```php
-$music = new Utvarp\MusicHelper\Music();
-
-// sets a source, takes string, array or collection. Defaults to 'all' if no parameters.
-$music->sources('all');
-$music->artist('Lady Gaga'); // sets an artist to search for
-$music->track('Poker Face'); // sets a track to search for
-
-$search = $music->search(15); // value is to set a limit to the results. Default is 25.
-
-// It could also be chained as such
-$search = $music->sources('all')->artist('Lady Gaga')->track('Poker Face')->search(15);
-
-// You can then call the corresponding method to get the results, or use $search direcly
-$search->getResults(); // no parameters = all. Returns a collection or the requested value
-$search->getResultsCount('deezer'); // same comment as getResults()
-```
-
-## Examples and what to expect in the results
-
-For now, this package will only fetch _basic_ informations:
+At the moment, this package will only fetch _basic_ informations:
 
 - The track name and id from requested source; 
 - (If available) The artist name and id from requested source;
@@ -47,31 +27,38 @@ _For now_, you need to make extra call to the source API (with the ID) to fetch 
 
 In addition to the information from the source API, the package will also perform a string similarity check between a result's track and artist name against the actual searched for result. That way, you could decide not to trust the source' listing order and sort yourself by one of the smililarity score.
 
+The package uses [PHP DotEnv](https://github.com/vlucas/phpdotenv) when it needs specific configuration. Be sure to include a `.env` at the root of your prject with the corresponding values that you'd need and see the `.env.example` file to know what are the possible values.
+
 Here's how you could play with the package:
 
 ```php
 $music = new Utvarp\MusicHelper\Music();
-$search = $music->search->source('all')->artist('Lady Gaga')->track('Poker Face')->search(15);
+
+// You're not forced to chain the methods, but search should go at the end.
+// Source takes a string, an array or a collection of the possible sources, default is 'all'.
+// The integer passes to search is the maximum result you want returned from an API, default is 25.
+$search = $music->source('all')->artist('Lady Gaga')->track('Poker Face')->search(15);
+
+// Now, out of all the source, if you wanted to get the Deezer results (but it could be any available source)
 $deezerResults = $search->getResults('deezer');
 
 $count = $deezerResults->count; // fetch the total results count
 $results = $deezerResults->results; // get the actual result collection
 
-// access a result
-$result = $results->first(); // Since it's a collection
+// You could acccess a specific result
+$result = $results->first(); // Since it's a collection, the usual methods are available
 //or
-$result = $results[0]; // But you can still access it as an array
+$result = $results[0]; // But you can still access a collection like an array, if you prefer
 
-// from here you can play with the track, artist or album object.
+// From the result, you have access to a track, artist and album object.
 $trackId = $result->track->id;
 $trackName = $result->track->name;
 $albumName = $result->album->name;
 
-// the similarity score isn't available for the album, since we don't (yet?) search by album
+// In those objects (except album), you also have access to a the similarity score from 3 different algorithms
 $similarTextScore = $result->track->similarityScores->similar_text; // maximum score of 100.0
 $smgScore = $result->track->similarityScores->smg; // Smith Waterman Gotoh score, maximum of 1.0
 $levenshteinScore = $result->track->similarityScores->levenshtein; // Levenshtein score, maximum of 1
-
 ```
 
 ## Wishlist / Roadmap / Help wanted 👷🚧👷‍♀️
