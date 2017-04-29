@@ -5,8 +5,6 @@ namespace Utvarp\MusicHelper;
 use Illuminate\Support\Collection;
 use Utvarp\MusicHelper\Exceptions\MusicException;
 use Utvarp\MusicHelper\Helpers;
-use Utvarp\MusicHelper\Models\DeezerResult;
-use Utvarp\MusicHelper\Searches\Deezer;
 
 class Music
 {
@@ -59,13 +57,22 @@ class Music
         $this->limit = $limit;
 
         $sources->each(function ($source) {
-            $source = ucfirst($source);
-            $method = "search{$source}";
-            $this->$method();
+            $ucFirstSource = ucfirst($source);
+            $searchClassName = "Utvarp\MusicHelper\Searches\\".$ucFirstSource;
+            $resultModelName = "Utvarp\MusicHelper\Models\\".$ucFirstSource."Result";
+
+            $searchClass = new $searchClassName();
+            $searchResults = $searchClass->search($this->track, $this->artist, $this->limit);
+
+            $results = new $resultModelName($searchResults, $this->track, $this->artist);
+            
+            $this->results->resultsBySources->put($source, $results);
+            $this->results->countBySources->put($source, $results->count);
         });
 
         $this->results->searchedForArtist = $this->artist;
         $this->results->searchedForTrack = $this->track;
+
         return $this->results;
     }
 
@@ -93,15 +100,6 @@ class Music
         }
 
         throw MusicException::sourceNotFoundInResults();
-    }
-
-    public function searchDeezer()
-    {
-        $search = Deezer::search($this->track, $this->artist, $this->limit);
-        $results = new DeezerResult($search, $this->track, $this->artist);
-
-        $this->results->resultsBySources->put('deezer', $results);
-        $this->results->countBySources->put('deezer', $results->count);
     }
 
     /**
