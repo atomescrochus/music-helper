@@ -5,8 +5,6 @@
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
 [![Build Status](https://img.shields.io/travis/utvarp/music-helper/master.svg?style=flat-square)](https://travis-ci.org/utvarp/music-helper)
 
-*In development.*
-
 There is a lot of source for music information around. Maybe you just want to search one of them. Maybe you need to have many of the at the same time. This package is here for you!
 
 ## Installation
@@ -83,7 +81,9 @@ $levenshteinScore = $result->track->similarityScores->levenshtein; // Levenshtei
 - Add more information to source (?)
 - Add methods to make more precise search in sources' APIs (for ex.: searching by the ID returned by the basic search)?
 
-## How to create new source
+## Sources
+
+### How to create new source
 
 This should be easy. Follow the next steps and check the corresponding files for the `deezer` source and just build from there!
 
@@ -91,6 +91,10 @@ This should be easy. Follow the next steps and check the corresponding files for
 2. Create a new model class in `src\Models\{SourceName}Result.php`. This class should be only responsible to correctly _format_ the results received by the API  and set the `track`, `artist` and `album` values using the corresponding methods you can find in the base `Result` model.
 3. Add `sourceName` to the `possibleSources` collection in the constructor of `src\Music.php`.
 4. Test your things, but it should now be all ok!
+
+### Existing sources
+
+- Deezer
 
 ## Testing
 
