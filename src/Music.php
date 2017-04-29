@@ -9,7 +9,7 @@ use Utvarp\MusicHelper\Helpers;
 class Music
 {
     protected $possibleSources;
-    private $source;
+    private $sources;
 
     /**
      * Create a new Music Instance.
@@ -20,6 +20,8 @@ class Music
             'all',
             'deezer',
         ]);
+
+        $this->sources(); // default
     }
 
     /**
@@ -31,20 +33,29 @@ class Music
     {
 
         if (is_string($sources) && $this->possibleSources->contains($sources)) {
-            $this->source = Helpers::collect($sources);
+            $this->sources = Helpers::collect($sources);
             return $this;
         }
 
         if (is_array($sources) && !$this->possibleSources->intersect($sources)->isEmpty()) {
-            $this->source = Helpers::collect($sources);
+            $this->sources = Helpers::collect($sources);
             return $this;
         }
 
         if ($sources instanceof Collection && !$this->possibleSources->intersect($sources)->isEmpty()) {
-            $this->source = $sources;
+            $this->sources = $sources;
             return $this;
         }
 
         throw MusicException::unsupportedSource();
+    }
+
+    /**
+     * Return the current value of sources
+     * @return Illuminate\Support\Collection A collection of set sources
+     */
+    public function getSources()
+    {
+        return $this->sources;
     }
 }
