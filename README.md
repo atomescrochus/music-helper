@@ -37,7 +37,7 @@ $search->getResults(); // no parameters = all. Returns a collection or the reque
 $search->getResultsCount('deezer'); // same comment as getResults()
 ```
 
-## What to expect in the results / Examples
+## Examples and what to expect in the results
 
 For now, this package will only fetch _basic_ informations:
 
@@ -74,6 +74,12 @@ $levenshteinScore = $result->track->similarityScores->levenshtein; // Levenshtei
 
 ```
 
+## Wishlist / Roadmap / Help wanted 👷🚧👷‍♀️
+
+- Caching search so we don't hit any API rate limit too quickly
+- More source
+
+
 ## Testing
 
 ```bash
@@ -82,7 +88,7 @@ $ composer test
 
 ## Contributing
 
-Contributions are welcome, [thanks to y'all](https://github.com/utvarp/music-helper/graphs/contributors) :)
+Contributions are welcome, [thanks to everyone who sent something out way](https://github.com/utvarp/music-helper/graphs/contributors) :)
 
 ## License
 
