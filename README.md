@@ -5,6 +5,8 @@
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
 [![Build Status](https://img.shields.io/travis/utvarp/music-helper/master.svg?style=flat-square)](https://travis-ci.org/utvarp/music-helper)
 
+*In development.*
+
 There is a lot of source for music information around. Maybe you just want to search one of them. Maybe you need to have many of the at the same time. This package is here for you!
 
 ## Installation
@@ -33,7 +35,9 @@ Then add the ServiceProvider to your `config/app.php` file:
 
 ```php
 $music = new Utvarp\Music();
-echo $music->echoPhrase('Útvarp means radio, in Icelandic.');
+
+// sets a source, takes string, array or collection. Defaults to 'all' if no parameters.
+$music->source('all');
 ```
 
 ## Testing
