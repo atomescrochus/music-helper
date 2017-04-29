@@ -84,8 +84,8 @@ This should be easy. Follow the next steps and check the corresponding files for
 
 ### Existing sources
 
-- Deezer (no API key required)
-- Musixmatch (API key required) (in development)
+- Deezer (API key required: *NO*)
+- Musixmatch (API key required: *YES*)
 
 ## Testing
 
