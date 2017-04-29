@@ -17,13 +17,12 @@ class MusixmatchResult
             'artist' => $searchedArtist,
         ];
 
-        $this->count = count($results);
+        $this->count = count($results['track_list']);
         $this->formatResults($results);
     }
 
     public function formatResults($results)
     {
-        // dd($results['track_list']);
         $this->results = collect($results['track_list'])->map(function ($result) {
             $model = new Result('musixmatch');
             
