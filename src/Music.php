@@ -28,9 +28,7 @@ class Music
             'musixmatch'
         ]);
 
-        $this->apiKeys = Helpers::collect([
-            'musixmatch' => null,
-        ]);
+        $this->apiKeys = Helpers::collect();
 
         // set defaults
         $this->sources();
@@ -160,7 +158,7 @@ class Music
 
     public function setMusixmatchAPIKey($key)
     {
-        $this->apiKeys->musixmatch = $key;
+        $this->apiKeys->put('musixmatch', $key);
 
         return $this;
     }

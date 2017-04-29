@@ -33,6 +33,7 @@ Here's how you could play with the package:
 $music = new Utvarp\MusicHelper\Music();
 
 // If the source you want to use needs an API key, you would include it like so
+// You can see in the available source list in the readme if an API needs a key
 $music->setMusixmatchAPiKey($key); // method names are in this fashion: set{Sourcename}APIKey
 
 // You're not forced to chain the methods, but search should go at the end.

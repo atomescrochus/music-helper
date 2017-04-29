@@ -14,17 +14,13 @@ class Musixmatch
         $this->apiKey = $apiKey;
     }
 
-    public static function search($track, $artist, $limit)
+    public function search($track, $artist, $limit)
     {
         $musixmatch = new MusixmatchAPI($this->apiKey);
         
-        $result = $musixmatch->method('track.search', array(
+        return $musixmatch->method('track.search', array(
             'q_artist'  => $artist,
             'q_track'   => $track
         ));
-
-        dd($result);
-        
-        return $deezer->search();
     }
 }
