@@ -37,6 +37,7 @@ $music = new Utvarp\MusicHelper\Music();
 $music->setMusixmatchAPiKey($key); // method names are in this fashion: set{Sourcename}APIKey
 
 // You're not forced to chain the methods, but search should go at the end.
+// You only need either an artist or a track, and call the search method to go.
 // Source takes a string, an array or a collection of the possible sources, default is 'all'.
 // The integer passes to search is the maximum result you want returned from an API, default is 25.
 $search = $music->source('all')->artist('Lady Gaga')->track('Poker Face')->search(15);
@@ -67,6 +68,12 @@ $levenshteinScore = $result->track->similarityScores->levenshtein; // Levenshtei
 
 - Caching search so we don't hit any API rate limit too quickly
 - More source
+	- Gracenote (https://github.com/StukiOrg/GracenoteClient-PHP ?)
+	- Spotify (https://github.com/Shemahmforash/SpotifyWebApi ?)
+	- Discogs (https://github.com/ShaneCullinane/discogs ?)
+	- iTunes (https://github.com/jacoz/php-itunes-api ?)
+	- Musicbrainz (https://github.com/PBXg33k/MusicBrainz ?)
+	- Google Play Music (https://github.com/cookieguru/google-music-search ?)
 - Add more information to source (?)
 - Add methods to make more precise search in sources' APIs (for ex.: searching by the ID returned by the basic search)?
 
