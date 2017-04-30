@@ -28,7 +28,9 @@ class Music
             'musixmatch'
         ]);
 
-        $this->apiKeys = Helpers::collect();
+        $this->apiKeys = Helpers::collect([
+            'musixmatch' => null,
+        ]);
 
         // set defaults
         $this->sources();
@@ -64,6 +66,10 @@ class Music
             $ucFirstSource = ucfirst($source);
             $searchClassName = "Utvarp\MusicHelper\Searches\\".$ucFirstSource;
             $resultModelName = "Utvarp\MusicHelper\Models\\".$ucFirstSource."Result";
+
+            if ($this->apiKeys->has($source) && is_null($this->apiKeys->get($source))) {
+                return; // no api key specified, but required. Skipping.
+            }
 
             $apiKey = $this->apiKeys->has($source) ? $this->apiKeys->get($source) : null;
 
