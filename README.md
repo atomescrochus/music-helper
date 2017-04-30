@@ -73,7 +73,7 @@ $levenshteinScore = $result->track->similarityScores->levenshtein; // Levenshtei
 	- Discogs (https://github.com/ShaneCullinane/discogs ?)
 	- iTunes (https://github.com/jacoz/php-itunes-api ?)
 	- Musicbrainz (https://github.com/PBXg33k/MusicBrainz ?)
-	- Google Play Music (https://github.com/cookieguru/google-music-search ?)
+	- Google Play Music
 - Add more information to source (?)
 - Add methods to make more precise search in sources' APIs (for ex.: searching by the ID returned by the basic search)?
 
